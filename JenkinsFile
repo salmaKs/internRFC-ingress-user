@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/salmaKs/internRFC-ingress-user.git'
+            }
+        }
+
+        stage('Deploy Ingress') {
+            steps {
+                script {
+                    sh "kubectl apply -f ingress.yaml"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Ingress deployment successful!'
+        }
+        failure {
+            echo 'Ingress deployment failed!'
+        }
+    }
+}
